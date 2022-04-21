@@ -9,11 +9,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using WebApi.Entities;
 using WebApi.Helpers;
-using WebApi.Models.Accounts;
 using WebApi.Services;
 using Fizzy_Airline.Helpers;
+using Fizzy_Airline.Dtos.Accounts;
+using Fizzy_Airline.Models;
 
 namespace Fizzy_Airline.Services
 {

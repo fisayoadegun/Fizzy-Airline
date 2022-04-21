@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using WebApi.Entities;
+using Fizzy_Airline.Models;
 
-namespace WebApi.Helpers
+namespace Fizzy_Airline.Helpers
 {
     public class DataContext : DbContext
     {

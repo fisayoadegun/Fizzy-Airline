@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Entities;
+using Fizzy_Airline.Dtos;
+using Fizzy_Airline.Models;
 
 namespace Fizzy_Airline.Controllers
 {
