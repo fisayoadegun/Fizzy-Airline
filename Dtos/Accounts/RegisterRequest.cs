@@ -13,9 +13,23 @@ namespace Fizzy_Airline.Dtos.Accounts
         [Required]
         public string LastName { get; set; }
 
+        public string OtherName { get; set; }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        public string Address { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string Country { get; set; }
 
         [Required]
         [MinLength(6)]

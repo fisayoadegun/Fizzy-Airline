@@ -23,6 +23,8 @@ namespace Fizzy_Airline.Services
         AuthenticateResponse RefreshToken(string token, string ipAddress);
         void RevokeToken(string token, string ipAddress);
         void Register(RegisterRequest model, string origin);
+
+        void UpdatePassenger(int id, PassengerResponse model);
         void VerifyEmail(string token);
         void ForgotPassword(ForgotPasswordRequest model, string origin);
         void ValidateResetToken(ValidateResetTokenRequest model);
@@ -127,10 +129,15 @@ namespace Fizzy_Airline.Services
             // map model to new account object
             var account = _mapper.Map<Account>(model);
 
+            // Passengers
+            var passenger = _mapper.Map<Passenger>(model);
+            passenger.Created = DateTime.Now;
+
+
             // first registered account is an admin
             var isFirstAccount = _context.Accounts.Count() == 0;
             account.Role = isFirstAccount ? Role.Admin : Role.User;
-            account.Created = DateTime.UtcNow;
+            account.Created = DateTime.Now;
             account.VerificationToken = randomTokenString();
 
             // hash password
@@ -138,6 +145,7 @@ namespace Fizzy_Airline.Services
 
             // save account
             _context.Accounts.Add(account);
+            _context.Passengers.Add(passenger);
             _context.SaveChanges();
 
             // send email
@@ -240,10 +248,15 @@ namespace Fizzy_Airline.Services
         public AccountResponse Update(int id, UpdateRequest model)
         {
             var account = getAccount(id);
+            var passenger = getPassenger(id);
 
             // validate
             if (account.Email != model.Email && _context.Accounts.Any(x => x.Email == model.Email))
                 throw new AppException($"Email '{model.Email}' is already taken");
+            if (passenger.Email != model.Email && _context.Passengers.Any(x => x.Email == model.Email))
+                throw new AppException($"Email '{model.Email}' is already taken");
+            if (passenger.PhoneNumber != model.PhoneNumber && _context.Passengers.Any(x => x.PhoneNumber == model.PhoneNumber))
+                throw new AppException($"A Passenger with the Phone Number '{model.PhoneNumber}' already exists");
 
             // hash password if it was entered
             if (!string.IsNullOrEmpty(model.Password))
@@ -251,17 +264,51 @@ namespace Fizzy_Airline.Services
 
             // copy model to account and save
             _mapper.Map(model, account);
-            account.Updated = DateTime.UtcNow;
+            _mapper.Map(model, passenger);
+            account.Updated = DateTime.Now;
+            passenger.Updated = account.Updated;
+            passenger.FirstName = account.FirstName;
+            passenger.LastName = account.LastName;
+            passenger.Email = account.Email;
+            passenger.PhoneNumber = passenger.PhoneNumber;
+            passenger.Address = passenger.Address;
+            passenger.City = passenger.City;
+            passenger.Country = passenger.Country;
             _context.Accounts.Update(account);
+            _context.Passengers.Update(passenger);
             _context.SaveChanges();
 
             return _mapper.Map<AccountResponse>(account);
         }
 
+        public void UpdatePassenger(int id, PassengerResponse model)
+        {
+            var account = getAccount(id);
+            var passenger = getPassenger(id);
+
+            // validate
+            if (account.Email != model.Email && _context.Accounts.Any(x => x.Email == model.Email))
+                throw new AppException($"Email '{model.Email}' is already taken");
+            if (passenger.Email != model.Email && _context.Passengers.Any(x => x.Email == model.Email))
+                throw new AppException($"Email '{model.Email}' is already taken");
+            if (passenger.PhoneNumber != model.PhoneNumber && _context.Passengers.Any(x => x.PhoneNumber == model.PhoneNumber))
+                throw new AppException($"A Passenger with the Phone Number '{model.PhoneNumber}' already exists");          
+
+            // copy model to account and save
+            _mapper.Map(model, account);
+            account.Updated = DateTime.Now;
+            passenger.Updated = DateTime.Now;
+            _context.Accounts.Update(account);
+            _context.Passengers.Update(passenger);
+            _context.SaveChanges();
+        }
+
         public void Delete(int id)
         {
             var account = getAccount(id);
+            var passenger = getPassenger(id);
             _context.Accounts.Remove(account);
+            _context.Passengers.Remove(passenger);
             _context.SaveChanges();
         }
 
@@ -273,6 +320,13 @@ namespace Fizzy_Airline.Services
             if (account == null) throw new KeyNotFoundException("Account not found");
             return account;
         }
+
+        private Passenger getPassenger(int id)
+		{
+            var passenger = _context.Passengers.Find(id);
+            if (passenger == null) throw new KeyNotFoundException("Passenger Account not found");
+            return passenger;
+		}
 
         private (RefreshToken, Account) getRefreshToken(string token)
         {
@@ -387,5 +441,7 @@ namespace Fizzy_Airline.Services
                          {message}"
             );
         }
-    }
+
+		
+	}
 }

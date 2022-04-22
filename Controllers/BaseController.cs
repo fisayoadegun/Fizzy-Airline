@@ -10,5 +10,6 @@ namespace Fizzy_Airline.Controllers
     {
         // returns the current authenticated account (null if not logged in)
         public Account Account => (Account)HttpContext.Items["Account"];
+        public Passenger Passenger => (Passenger)HttpContext.Items["Passenger"];
     }
 }

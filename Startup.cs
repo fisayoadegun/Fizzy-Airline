@@ -1,5 +1,7 @@
 using Fizzy_Airline.Helpers;
 using Fizzy_Airline.Middleware;
+using Fizzy_Airline.Repository;
+using Fizzy_Airline.Repository.Interface;
 using Fizzy_Airline.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,6 +43,7 @@ namespace Fizzy_Airline
 			// configure DI for application services
 			services.AddScoped<IAccountService, AccountService>();
 			services.AddScoped<IEmailService, EmailService>();
+			services.AddTransient<IPassengerRepository, PassengerRepository>();
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{

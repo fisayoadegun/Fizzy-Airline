@@ -14,6 +14,7 @@ namespace Fizzy_Airline.Dtos.Accounts
 
         [Required]
         public string LastName { get; set; }
+        
 
         [Required]
         [EnumDataType(typeof(Role))]
@@ -21,7 +22,7 @@ namespace Fizzy_Airline.Dtos.Accounts
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; }      
 
         [Required]
         [MinLength(6)]

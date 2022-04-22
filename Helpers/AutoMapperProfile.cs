@@ -17,6 +17,9 @@ namespace WebApi.Helpers
 
             CreateMap<CreateRequest, Account>();
 
+            CreateMap<RegisterRequest, Passenger>();
+            CreateMap<Passenger, PassengerResponse>();
+
             CreateMap<UpdateRequest, Account>()
                 .ForAllMembers(x => x.Condition(
                     (src, dest, prop) =>
@@ -31,6 +34,18 @@ namespace WebApi.Helpers
                         return true;
                     }
                 ));
+
+            CreateMap<UpdateRequest, Passenger>()
+                .ForAllMembers(x => x.Condition(
+                    (src, dest, prop) =>
+                    {
+                        if (prop == null) return false;
+                        if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
+
+                        return true;
+                    }
+                ));
+
         }
     }
 }
