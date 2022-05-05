@@ -11,6 +11,9 @@ namespace Fizzy_Airline.Helpers
         }
         public DbSet<Account> Accounts { get; set; }
 		public DbSet<Passenger> Passengers { get; set; }
+		public DbSet<Airplane> Airplanes { get; set; }
+
+		public DbSet<Flight_Attendant> Flight_Attendants { get; set; }
 
 	}
 }

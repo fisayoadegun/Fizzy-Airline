@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Fizzy_Airline.Models
 {
@@ -7,7 +8,13 @@ namespace Fizzy_Airline.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
+
+        [StringLength(50, MinimumLength = 2)]
+        [RegularExpression(".*[a-zA-Z]+.*", ErrorMessage = "Only numerics are not allowed")]
         public string FirstName { get; set; }
+
+        [StringLength(50, MinimumLength = 2)]
+        [RegularExpression(".*[a-zA-Z]+.*", ErrorMessage = "Only numerics are not allowed")]
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }

@@ -43,6 +43,8 @@ namespace Fizzy_Airline
 			// configure DI for application services
 			services.AddScoped<IAccountService, AccountService>();
 			services.AddScoped<IEmailService, EmailService>();
+			services.AddTransient<IAirplaneRepository, AirplaneRepository>();
+			services.AddTransient<IFlightAttendantRepository, FlightAttendantRepository>();
 			services.AddTransient<IPassengerRepository, PassengerRepository>();
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
