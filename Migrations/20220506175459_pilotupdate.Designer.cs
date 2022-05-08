@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fizzy_Airline.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220505195113_flightattendantupdate")]
-    partial class flightattendantupdate
+    [Migration("20220506175459_pilotupdate")]
+    partial class pilotupdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -169,6 +169,40 @@ namespace Fizzy_Airline.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Passengers");
+                });
+
+            modelBuilder.Entity("Fizzy_Airline.Models.Pilot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Designation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PilotLicense")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pilots");
                 });
 
             modelBuilder.Entity("Fizzy_Airline.Models.Account", b =>
