@@ -15,3 +15,5 @@ namespace Fizzy_Airline.Helpers
         public string SmtpPass { get; set; }
     }
 }
+
+

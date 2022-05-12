@@ -45,6 +45,7 @@ namespace Fizzy_Airline
 			services.AddScoped<IEmailService, EmailService>();
 			services.AddTransient<IAirplaneRepository, AirplaneRepository>();
 			services.AddTransient<IFlightAttendantRepository, FlightAttendantRepository>();
+			services.AddTransient<IFlightRepository, FlightRepository>();
 			services.AddTransient<ILocationRepository, LocationRepository>();
 			services.AddTransient<IPassengerRepository, PassengerRepository>();
 			services.AddTransient<IPilotRepository, PilotRepository>();

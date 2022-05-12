@@ -66,3 +66,25 @@ namespace Fizzy_Airline.Controllers
 
 	}
 }
+
+//{
+//	"airplane_id": 1,
+//  "firstPilotId": 1,
+//  "secondPilotId": 2,
+//  "firstFlightAttendantId": 1,
+//  "secondFlightAttendantId": 2,
+
+//  "price": 50000,
+//  "departureDate": "2022-05-11T18:52:25.119Z",
+//  "arrivalDate": "2022-05-11T18:52:25.119Z",
+//  "goingFromId": 1,
+//  "arrivingAtId": 2
+//}
+
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYmYiOjE2NTIzNTI2NjcsImV4cCI6MTY1MjM1MzU2NywiaWF0IjoxNjUyMzUyNjY3fQ.Pr1RfyFozzdrSs98VoWswW9EqSIRaeK5v2MGYeEy4lk
+
+//{
+
+//    "thirdFlightAttendantId": 3,  
+//  "departed": true,
+//}

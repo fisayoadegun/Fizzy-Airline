@@ -18,5 +18,7 @@ namespace Fizzy_Airline.Helpers
 
 		public DbSet<Location> Locations { get; set; }
 
+		public DbSet<Flight> Flights { get; set; }
+
 	}
 }

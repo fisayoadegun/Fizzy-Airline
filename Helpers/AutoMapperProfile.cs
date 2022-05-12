@@ -18,6 +18,36 @@ namespace WebApi.Helpers
             CreateMap<Airplane, AirplaneCreationDto>().ReverseMap();
             CreateMap<CreateRequest, Account>();
 
+            CreateMap<Flight, FlightUpdateRequestDto>().ReverseMap();
+            CreateMap<Flight, FlightDto>()
+                .ForMember(d => d.GoingFrom, opt => opt.MapFrom(src => src.GoingFrom.LocationName))
+                .ForMember(d => d.ArrivingAt, opt => opt.MapFrom(src => src.ArrivingAt.LocationName))
+                .ForMember(d => d.Airplane, opt => opt.MapFrom(src => src.Airplane.Model))
+                .ForMember(d => d.Manufacturer, opt => opt.MapFrom(src => src.Airplane.Manufacturer))
+                .ForMember(d => d.FirstPilot, opt => opt.MapFrom(src => src.FirstPilot.FirstName))
+                .ForMember(d => d.FirstPilotLastName, opt => opt.MapFrom(src => src.FirstPilot.LastName))
+                .ForMember(d => d.SecondPilot, opt => opt.MapFrom(src => src.SecondPilot.FirstName))
+                .ForMember(d => d.SecondPilotLastName, opt => opt.MapFrom(src => src.SecondPilot.LastName))
+                .ForMember(d => d.FirstFlightAttendant, opt => opt.MapFrom(src => src.FirstFlightAttendant.FirstName))
+                .ForMember(d => d.FirstFlightAttendantLastName, opt => opt.MapFrom(src => src.FirstFlightAttendant.LastName))
+                .ForMember(d => d.SecondFlightAttendant, opt => opt.MapFrom(src => src.SecondFlightAttendant.FirstName))
+                .ForMember(d => d.SecondFlightAttendantLastName, opt => opt.MapFrom(src => src.SecondFlightAttendant.LastName))
+                .ForMember(d => d.ThirdFlightAttendant, opt => opt.MapFrom(src => src.ThirdFlightAttendant.FirstName))
+                .ForMember(d => d.ThirdFlightAttendantLastName, opt => opt.MapFrom(src => src.ThirdFlightAttendant.LastName));
+                
+            CreateMap<Flight, FlightCreationDto>().ReverseMap();
+            CreateMap<FlightUpdateDto, Flight>()
+                 .ForAllMembers(x => x.Condition(
+                    (src, dest, prop) =>
+                    {
+                        // ignore null & empty string properties
+                        if (prop == null) return false;
+                        if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
+
+                        return true;
+                    }
+                ));
+
             CreateMap<Flight_Attendant, FlightAttendantDto>().ReverseMap();
             CreateMap<Flight_Attendant, FlightAttendantCreationDto>().ReverseMap();
             CreateMap<FlightAttendantUpdateDto, Flight_Attendant>()

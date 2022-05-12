@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fizzy_Airline.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220508121454_locations")]
-    partial class locations
+    [Migration("20220511180402_flightmigrate")]
+    partial class flightmigrate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,6 +95,85 @@ namespace Fizzy_Airline.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Airplanes");
+                });
+
+            modelBuilder.Entity("Fizzy_Airline.Models.Flight", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Airplane_Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ArrivalDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("ArrivedAtDestination")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ArrivingAtId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Departed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DepartureDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FirstFlightAttendantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FirstPilotId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoingFromId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("SecondFlightAttendantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SecondPilotId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ThirdFlightAttendantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Airplane_Id");
+
+                    b.HasIndex("ArrivingAtId");
+
+                    b.HasIndex("FirstFlightAttendantId");
+
+                    b.HasIndex("FirstPilotId");
+
+                    b.HasIndex("GoingFromId");
+
+                    b.HasIndex("SecondFlightAttendantId");
+
+                    b.HasIndex("SecondPilotId");
+
+                    b.HasIndex("ThirdFlightAttendantId");
+
+                    b.ToTable("Flights");
                 });
 
             modelBuilder.Entity("Fizzy_Airline.Models.Flight_Attendant", b =>
@@ -267,6 +346,71 @@ namespace Fizzy_Airline.Migrations
                         });
 
                     b.Navigation("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Fizzy_Airline.Models.Flight", b =>
+                {
+                    b.HasOne("Fizzy_Airline.Models.Airplane", "Airplane")
+                        .WithMany()
+                        .HasForeignKey("Airplane_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Fizzy_Airline.Models.Location", "ArrivingAt")
+                        .WithMany()
+                        .HasForeignKey("ArrivingAtId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Fizzy_Airline.Models.Flight_Attendant", "FirstFlightAttendant")
+                        .WithMany()
+                        .HasForeignKey("FirstFlightAttendantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Fizzy_Airline.Models.Pilot", "FirstPilot")
+                        .WithMany()
+                        .HasForeignKey("FirstPilotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Fizzy_Airline.Models.Location", "GoingFrom")
+                        .WithMany()
+                        .HasForeignKey("GoingFromId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Fizzy_Airline.Models.Flight_Attendant", "SecondFlightAttendant")
+                        .WithMany()
+                        .HasForeignKey("SecondFlightAttendantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Fizzy_Airline.Models.Pilot", "SecondPilot")
+                        .WithMany()
+                        .HasForeignKey("SecondPilotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Fizzy_Airline.Models.Flight_Attendant", "ThirdFlightAttendant")
+                        .WithMany()
+                        .HasForeignKey("ThirdFlightAttendantId");
+
+                    b.Navigation("Airplane");
+
+                    b.Navigation("ArrivingAt");
+
+                    b.Navigation("FirstFlightAttendant");
+
+                    b.Navigation("FirstPilot");
+
+                    b.Navigation("GoingFrom");
+
+                    b.Navigation("SecondFlightAttendant");
+
+                    b.Navigation("SecondPilot");
+
+                    b.Navigation("ThirdFlightAttendant");
                 });
 #pragma warning restore 612, 618
         }

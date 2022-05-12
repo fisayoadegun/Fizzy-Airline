@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Fizzy_Airline.Migrations
 {
-    public partial class pilotupdate : Migration
+    public partial class flightmigrate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,6 +61,19 @@ namespace Fizzy_Airline.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Flight_Attendants", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LocationName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,6 +142,123 @@ namespace Fizzy_Airline.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Flights",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Airplane_Id = table.Column<int>(type: "int", nullable: false),
+                    FirstPilotId = table.Column<int>(type: "int", nullable: false),
+                    SecondPilotId = table.Column<int>(type: "int", nullable: false),
+                    FirstFlightAttendantId = table.Column<int>(type: "int", nullable: false),
+                    SecondFlightAttendantId = table.Column<int>(type: "int", nullable: false),
+                    ThirdFlightAttendantId = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    DepartureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ArrivalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GoingFromId = table.Column<int>(type: "int", nullable: false),
+                    ArrivingAtId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Departed = table.Column<bool>(type: "bit", nullable: false),
+                    ArrivedAtDestination = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Flights", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Flights_Airplanes_Airplane_Id",
+                        column: x => x.Airplane_Id,
+                        principalTable: "Airplanes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Flights_Flight_Attendants_FirstFlightAttendantId",
+                        column: x => x.FirstFlightAttendantId,
+                        principalTable: "Flight_Attendants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Flights_Flight_Attendants_SecondFlightAttendantId",
+                        column: x => x.SecondFlightAttendantId,
+                        principalTable: "Flight_Attendants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Flights_Flight_Attendants_ThirdFlightAttendantId",
+                        column: x => x.ThirdFlightAttendantId,
+                        principalTable: "Flight_Attendants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Flights_Locations_ArrivingAtId",
+                        column: x => x.ArrivingAtId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Flights_Locations_GoingFromId",
+                        column: x => x.GoingFromId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Flights_Pilots_FirstPilotId",
+                        column: x => x.FirstPilotId,
+                        principalTable: "Pilots",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Flights_Pilots_SecondPilotId",
+                        column: x => x.SecondPilotId,
+                        principalTable: "Pilots",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Flights_Airplane_Id",
+                table: "Flights",
+                column: "Airplane_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Flights_ArrivingAtId",
+                table: "Flights",
+                column: "ArrivingAtId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Flights_FirstFlightAttendantId",
+                table: "Flights",
+                column: "FirstFlightAttendantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Flights_FirstPilotId",
+                table: "Flights",
+                column: "FirstPilotId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Flights_GoingFromId",
+                table: "Flights",
+                column: "GoingFromId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Flights_SecondFlightAttendantId",
+                table: "Flights",
+                column: "SecondFlightAttendantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Flights_SecondPilotId",
+                table: "Flights",
+                column: "SecondPilotId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Flights_ThirdFlightAttendantId",
+                table: "Flights",
+                column: "ThirdFlightAttendantId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_AccountId",
                 table: "RefreshToken",
@@ -138,19 +268,25 @@ namespace Fizzy_Airline.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Flights");
+
+            migrationBuilder.DropTable(
+                name: "Passengers");
+
+            migrationBuilder.DropTable(
+                name: "RefreshToken");
+
+            migrationBuilder.DropTable(
                 name: "Airplanes");
 
             migrationBuilder.DropTable(
                 name: "Flight_Attendants");
 
             migrationBuilder.DropTable(
-                name: "Passengers");
+                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "Pilots");
-
-            migrationBuilder.DropTable(
-                name: "RefreshToken");
 
             migrationBuilder.DropTable(
                 name: "Accounts");
