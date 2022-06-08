@@ -4,14 +4,16 @@ using Fizzy_Airline.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fizzy_Airline.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220522101552_cleanupagain")]
+    partial class cleanupagain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,12 +123,6 @@ namespace Fizzy_Airline.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Flight_id")
                         .HasColumnType("int");
 
@@ -144,12 +140,6 @@ namespace Fizzy_Airline.Migrations
 
                     b.Property<int>("Ticket_id")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -246,13 +236,13 @@ namespace Fizzy_Airline.Migrations
                         {
                             Id = 1,
                             Airplane_Id = 1,
-                            ArrivalDate = new DateTime(2022, 6, 9, 20, 42, 11, 71, DateTimeKind.Local).AddTicks(93),
+                            ArrivalDate = new DateTime(2022, 5, 23, 11, 15, 51, 553, DateTimeKind.Local).AddTicks(9418),
                             ArrivedAtDestination = false,
                             ArrivingAtId = 2,
-                            CreatedAt = new DateTime(2022, 6, 8, 20, 42, 11, 71, DateTimeKind.Local).AddTicks(1221),
+                            CreatedAt = new DateTime(2022, 5, 22, 11, 15, 51, 554, DateTimeKind.Local).AddTicks(727),
                             CreatedBy = "Fisayo.Adegun",
                             Departed = false,
-                            DepartureDate = new DateTime(2022, 6, 8, 20, 42, 11, 69, DateTimeKind.Local).AddTicks(5408),
+                            DepartureDate = new DateTime(2022, 5, 22, 11, 15, 51, 552, DateTimeKind.Local).AddTicks(2217),
                             FirstFlightAttendantId = 1,
                             FirstPilotId = 1,
                             GoingFromId = 1,
@@ -477,9 +467,6 @@ namespace Fizzy_Airline.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DepartureDate")
                         .HasColumnType("datetime2");
 
@@ -498,14 +485,8 @@ namespace Fizzy_Airline.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int?>("Sequence")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Ticket_id");
 

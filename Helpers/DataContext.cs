@@ -20,5 +20,13 @@ namespace Fizzy_Airline.Helpers
 
 		public DbSet<Flight> Flights { get; set; }
 
+		public DbSet<Ticket> Tickets { get; set; }
+		public DbSet<BoardingPass> BoardingPasses { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.SeedData();
+		}
+
 	}
 }

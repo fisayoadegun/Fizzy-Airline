@@ -90,6 +90,10 @@ namespace Fizzy_Airline.Models
 		[Display(Name = "Third Flight Attendant")]
 		public virtual Flight_Attendant ThirdFlightAttendant { get; set; }
 
+		public ICollection<Ticket> Tickets { get; set; }
+
+		public ICollection<BoardingPass> BoardingPasses { get; set; }
+
 
 	}
 }

@@ -32,7 +32,7 @@ namespace Fizzy_Airline.Controllers
 		{
 			var airplanes = _airRepo.Query();
 
-			var airplanesDto =  _mapper.Map<IEnumerable<AirplaneDto>>(airplanes);
+			var airplanesDto =   _mapper.Map<IEnumerable<AirplaneDto>>(airplanes);
 
 			return Ok(airplanesDto);
 		}

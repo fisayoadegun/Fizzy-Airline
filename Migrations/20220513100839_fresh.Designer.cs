@@ -4,14 +4,16 @@ using Fizzy_Airline.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fizzy_Airline.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220513100839_fresh")]
+    partial class fresh
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,55 +116,6 @@ namespace Fizzy_Airline.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Fizzy_Airline.Models.BoardingPass", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Flight_id")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("HasBoarded")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HasCheckedIn")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Luggage")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Passenger_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Ticket_id")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Flight_id");
-
-                    b.HasIndex("Passenger_id");
-
-                    b.HasIndex("Ticket_id")
-                        .IsUnique();
-
-                    b.ToTable("BoardingPasses");
-                });
-
             modelBuilder.Entity("Fizzy_Airline.Models.Flight", b =>
                 {
                     b.Property<int>("Id")
@@ -246,13 +199,13 @@ namespace Fizzy_Airline.Migrations
                         {
                             Id = 1,
                             Airplane_Id = 1,
-                            ArrivalDate = new DateTime(2022, 6, 9, 20, 42, 11, 71, DateTimeKind.Local).AddTicks(93),
+                            ArrivalDate = new DateTime(2022, 5, 14, 11, 8, 38, 794, DateTimeKind.Local).AddTicks(2738),
                             ArrivedAtDestination = false,
                             ArrivingAtId = 2,
-                            CreatedAt = new DateTime(2022, 6, 8, 20, 42, 11, 71, DateTimeKind.Local).AddTicks(1221),
+                            CreatedAt = new DateTime(2022, 5, 13, 11, 8, 38, 794, DateTimeKind.Local).AddTicks(3708),
                             CreatedBy = "Fisayo.Adegun",
                             Departed = false,
-                            DepartureDate = new DateTime(2022, 6, 8, 20, 42, 11, 69, DateTimeKind.Local).AddTicks(5408),
+                            DepartureDate = new DateTime(2022, 5, 13, 11, 8, 38, 792, DateTimeKind.Local).AddTicks(9640),
                             FirstFlightAttendantId = 1,
                             FirstPilotId = 1,
                             GoingFromId = 1,
@@ -458,68 +411,6 @@ namespace Fizzy_Airline.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Fizzy_Airline.Models.Ticket", b =>
-                {
-                    b.Property<int>("Ticket_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("ArrivalDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ArrivingAtId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BookingReference")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DepartureDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Flight_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GoingFromId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsPaid")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Passenger_id")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("Sequence")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Ticket_id");
-
-                    b.HasIndex("ArrivingAtId");
-
-                    b.HasIndex("Flight_id");
-
-                    b.HasIndex("GoingFromId");
-
-                    b.HasIndex("Passenger_id");
-
-                    b.ToTable("Tickets");
-                });
-
             modelBuilder.Entity("Fizzy_Airline.Models.Account", b =>
                 {
                     b.OwnsMany("Fizzy_Airline.Models.RefreshToken", "RefreshTokens", b1 =>
@@ -566,33 +457,6 @@ namespace Fizzy_Airline.Migrations
                         });
 
                     b.Navigation("RefreshTokens");
-                });
-
-            modelBuilder.Entity("Fizzy_Airline.Models.BoardingPass", b =>
-                {
-                    b.HasOne("Fizzy_Airline.Models.Flight", "Flight")
-                        .WithMany("BoardingPasses")
-                        .HasForeignKey("Flight_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fizzy_Airline.Models.Passenger", "Passenger")
-                        .WithMany()
-                        .HasForeignKey("Passenger_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fizzy_Airline.Models.Ticket", "Ticket")
-                        .WithOne("BoardingPass")
-                        .HasForeignKey("Fizzy_Airline.Models.BoardingPass", "Ticket_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Flight");
-
-                    b.Navigation("Passenger");
-
-                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Fizzy_Airline.Models.Flight", b =>
@@ -658,53 +522,6 @@ namespace Fizzy_Airline.Migrations
                     b.Navigation("SecondPilot");
 
                     b.Navigation("ThirdFlightAttendant");
-                });
-
-            modelBuilder.Entity("Fizzy_Airline.Models.Ticket", b =>
-                {
-                    b.HasOne("Fizzy_Airline.Models.Location", "ArrivingAt")
-                        .WithMany()
-                        .HasForeignKey("ArrivingAtId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fizzy_Airline.Models.Flight", "Flight")
-                        .WithMany("Tickets")
-                        .HasForeignKey("Flight_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fizzy_Airline.Models.Location", "GoingFrom")
-                        .WithMany()
-                        .HasForeignKey("GoingFromId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fizzy_Airline.Models.Passenger", "Passenger")
-                        .WithMany()
-                        .HasForeignKey("Passenger_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ArrivingAt");
-
-                    b.Navigation("Flight");
-
-                    b.Navigation("GoingFrom");
-
-                    b.Navigation("Passenger");
-                });
-
-            modelBuilder.Entity("Fizzy_Airline.Models.Flight", b =>
-                {
-                    b.Navigation("BoardingPasses");
-
-                    b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("Fizzy_Airline.Models.Ticket", b =>
-                {
-                    b.Navigation("BoardingPass");
                 });
 #pragma warning restore 612, 618
         }

@@ -24,6 +24,7 @@ namespace WebApi.Helpers
                 .ForMember(d => d.ArrivingAt, opt => opt.MapFrom(src => src.ArrivingAt.LocationName))
                 .ForMember(d => d.Airplane, opt => opt.MapFrom(src => src.Airplane.Model))
                 .ForMember(d => d.Manufacturer, opt => opt.MapFrom(src => src.Airplane.Manufacturer))
+                .ForMember(d => d.NumberOfSeats, opt => opt.MapFrom(src => src.Airplane.NumberOfSeats))
                 .ForMember(d => d.FirstPilot, opt => opt.MapFrom(src => src.FirstPilot.FirstName))
                 .ForMember(d => d.FirstPilotLastName, opt => opt.MapFrom(src => src.FirstPilot.LastName))
                 .ForMember(d => d.SecondPilot, opt => opt.MapFrom(src => src.SecondPilot.FirstName))

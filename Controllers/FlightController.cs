@@ -36,7 +36,7 @@ namespace Fizzy_Airline.Controllers
 		[HttpPost("add_flight")]
 		public ActionResult<FlightCreationDto> AddFlight(FlightCreationDto flightCreationDto)
 		{
-			flightCreationDto.CreatedBy = Account.FirstName;			
+			flightCreationDto.CreatedBy = $" {Account.FirstName}.{Account.LastName}";
 			_flightRepository.AddFlight(flightCreationDto);
 			return Ok(flightCreationDto);
 
@@ -52,7 +52,7 @@ namespace Fizzy_Airline.Controllers
 		[HttpPut("{id:int}")]
 		public ActionResult<FlightUpdateRequestDto> Update(int id, FlightUpdateDto model)
 		{
-			model.UpdatedBy = Account.FirstName;
+			model.UpdatedBy = $" {Account.FirstName}.{Account.LastName}";
 			var flight = _flightRepository.Update(id, model);
 			return Ok(flight);
 		}

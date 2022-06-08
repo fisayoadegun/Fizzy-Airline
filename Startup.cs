@@ -49,6 +49,7 @@ namespace Fizzy_Airline
 			services.AddTransient<ILocationRepository, LocationRepository>();
 			services.AddTransient<IPassengerRepository, PassengerRepository>();
 			services.AddTransient<IPilotRepository, PilotRepository>();
+			services.AddTransient<ITicketRepository, TicketRepository>();
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{

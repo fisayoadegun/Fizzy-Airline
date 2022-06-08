@@ -30,6 +30,8 @@ namespace Fizzy_Airline.Dtos
 		public string Airplane { get; set; }
 		public string Manufacturer { get; set; }
 
+		public string NumberOfSeats { get; set; }
+
 		public bool Departed { get; set; }
 		public bool ArrivedAtDestination { get; set; }
 

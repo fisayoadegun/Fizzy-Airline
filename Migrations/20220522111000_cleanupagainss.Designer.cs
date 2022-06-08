@@ -4,14 +4,16 @@ using Fizzy_Airline.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fizzy_Airline.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220522111000_cleanupagainss")]
+    partial class cleanupagainss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,13 +248,13 @@ namespace Fizzy_Airline.Migrations
                         {
                             Id = 1,
                             Airplane_Id = 1,
-                            ArrivalDate = new DateTime(2022, 6, 9, 20, 42, 11, 71, DateTimeKind.Local).AddTicks(93),
+                            ArrivalDate = new DateTime(2022, 5, 23, 12, 9, 59, 204, DateTimeKind.Local).AddTicks(289),
                             ArrivedAtDestination = false,
                             ArrivingAtId = 2,
-                            CreatedAt = new DateTime(2022, 6, 8, 20, 42, 11, 71, DateTimeKind.Local).AddTicks(1221),
+                            CreatedAt = new DateTime(2022, 5, 22, 12, 9, 59, 204, DateTimeKind.Local).AddTicks(2652),
                             CreatedBy = "Fisayo.Adegun",
                             Departed = false,
-                            DepartureDate = new DateTime(2022, 6, 8, 20, 42, 11, 69, DateTimeKind.Local).AddTicks(5408),
+                            DepartureDate = new DateTime(2022, 5, 22, 12, 9, 59, 201, DateTimeKind.Local).AddTicks(5499),
                             FirstFlightAttendantId = 1,
                             FirstPilotId = 1,
                             GoingFromId = 1,
@@ -497,9 +499,6 @@ namespace Fizzy_Airline.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
-
-                    b.Property<int?>("Sequence")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");

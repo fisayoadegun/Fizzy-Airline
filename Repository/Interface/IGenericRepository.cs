@@ -19,5 +19,6 @@ namespace Fizzy_Airline.Repository.Interface
 
         Task<T> DeleteAsync(int id);
         Task DeleteRangeAsync(IEnumerable<T> entities);
+       
     }
 }

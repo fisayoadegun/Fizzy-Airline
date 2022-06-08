@@ -16,5 +16,7 @@ namespace Fizzy_Airline.Models
 		[Required]
 		public string Manufacturer { get; set; }
 
+		public int? NumberOfSeats { get; set; }
+
 	}
 }

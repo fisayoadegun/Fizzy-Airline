@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Fizzy_Airline.Migrations
 {
-    public partial class flightmigrate : Migration
+    public partial class fresh : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,8 @@ namespace Fizzy_Airline.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumberOfSeats = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,6 +219,50 @@ namespace Fizzy_Airline.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Airplanes",
+                columns: new[] { "Id", "Manufacturer", "Model", "NumberOfSeats" },
+                values: new object[,]
+                {
+                    { 1, "Airbus", "Airbus A350-1000", 3 },
+                    { 2, "Antonov", "Antonov AN-124 Ruslan", 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Flight_Attendants",
+                columns: new[] { "Id", "ContactNumber", "Designation", "FirstName", "LastName" },
+                values: new object[,]
+                {
+                    { 1, "87368396", "test", "Busola", "Adegun" },
+                    { 2, "87368347396", "test", "Tope", "Fajuyi" },
+                    { 3, "0737373", "test", "Shade", "Francis" },
+                    { 4, "6453353", "test", "Ola", "John" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Locations",
+                columns: new[] { "Id", "LocationName" },
+                values: new object[,]
+                {
+                    { 1, "Lagos" },
+                    { 2, "Enugu" },
+                    { 3, "Abuja" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Pilots",
+                columns: new[] { "Id", "ContactNumber", "Designation", "FirstName", "LastName", "PilotLicense" },
+                values: new object[,]
+                {
+                    { 1, "07069482433", "test", "Wale", "Akinyemi", "test" },
+                    { 2, "84387936", "test", "Fisayo", "Emma", "test" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Flights",
+                columns: new[] { "Id", "Airplane_Id", "ArrivalDate", "ArrivedAtDestination", "ArrivingAtId", "CreatedAt", "CreatedBy", "Departed", "DepartureDate", "FirstFlightAttendantId", "FirstPilotId", "GoingFromId", "Price", "SecondFlightAttendantId", "SecondPilotId", "ThirdFlightAttendantId", "UpdatedAt", "UpdatedBy" },
+                values: new object[] { 1, 1, new DateTime(2022, 5, 14, 11, 8, 38, 794, DateTimeKind.Local).AddTicks(2738), false, 2, new DateTime(2022, 5, 13, 11, 8, 38, 794, DateTimeKind.Local).AddTicks(3708), "Fisayo.Adegun", false, new DateTime(2022, 5, 13, 11, 8, 38, 792, DateTimeKind.Local).AddTicks(9640), 1, 1, 1, 107500.0, 2, 2, 4, null, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Flights_Airplane_Id",
