@@ -16,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WebApi.Helpers;
 using WebApi.Services;
@@ -37,6 +38,8 @@ namespace Fizzy_Airline
 			services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			// configure strongly typed settings object
 			services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
+			//services.AddControllers().AddJsonOptions(x =>
+			//	x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 			services.AddSwaggerGen();
 			services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
@@ -91,7 +94,7 @@ namespace Fizzy_Airline
 				app.UseDeveloperExceptionPage();
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fizzy_Airline v1"));
-			}
+			}			
 
 			app.UseHttpsRedirection();
 

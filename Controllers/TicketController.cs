@@ -28,6 +28,35 @@ namespace Fizzy_Airline.Controllers
 			_accountService = accountService;
 		}
 
+		[HttpGet("tickets")]
+		public ActionResult<IEnumerable<TicketDto>> GetTickets()
+		{
+			var tickets = _ticketRepository.GetAll();
+			return Ok(tickets);
+		}
+
+		[HttpGet("{bookingref}/{Surname}")]
+		public async Task<ActionResult<TicketDto>> GetTicketByBookingRefandSurname(string bookingref, string Surname)
+		{
+			var ticket =  await _ticketRepository.GetTicketUsingBookingSurname(bookingref, Surname);
+			return Ok(ticket);
+		}
+
+		[HttpGet("{id:int}")]
+		public async Task<ActionResult<TicketDto>> GetTicketById(int id)
+		{
+			var ticket = await _ticketRepository.GetTicketById(id);
+			return Ok(ticket);
+		}
+
+		[HttpGet("{bookingReference}")]
+		public async Task<ActionResult<TicketDto>> GetTicketUsingBookingReference(string bookingReference)
+		{
+			var ticket = await _ticketRepository.GetTicketByBookingReference(bookingReference);
+			return Ok(ticket);
+		}
+
+
 		[HttpPost("add_new_ticket")]
 		public async Task<IActionResult> AddNewTicket(TicketCreationDto ticket)
 		{
@@ -35,15 +64,14 @@ namespace Fizzy_Airline.Controllers
 			//2022-06-09T20:42:11.0710093
 
 			var addTicket = _mapper.Map<Ticket>(ticket);
-			var boardingPass = _mapper.Map<BoardingPass>(ticket);
-			var checkflight = _dbContext.Flights.First(x => x.GoingFromId == ticket.GoingFromId
+			var boardingPass = _mapper.Map<BoardingPass>(ticket);			
+			var checkflight =  _dbContext.Flights.FirstOrDefault(x => x.GoingFromId == ticket.GoingFromId
 			&& x.ArrivingAtId == ticket.ArrivingAtId && x.DepartureDate == ticket.DepartureDate
 			&& x.ArrivalDate == ticket.ArrivalDate);
+
 			if (checkflight == null)
 				throw new AppException("Flight does not exist");
-			//var flight = _dbContext.Flights.First(x => x.Id == ticket.Flight_id);
-						
-
+									
 			if (ticket.GoingFromId == ticket.ArrivingAtId)
 				throw new AppException("Take off Location and Destination cannot be the same");
 

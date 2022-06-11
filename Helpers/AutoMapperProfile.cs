@@ -64,7 +64,7 @@ namespace WebApi.Helpers
                 ));
 
             CreateMap<Location, LocationDto>().ReverseMap();
-            CreateMap<Location, LocationCreationDto>().ReverseMap();
+            CreateMap<Location, LocationCreationDto>();
             CreateMap<LocationUpdateDto, Location>()
                  .ForAllMembers(x => x.Condition(
                     (src, dest, prop) =>
@@ -96,6 +96,12 @@ namespace WebApi.Helpers
             CreateMap<RegisterRequest, Passenger>();
             CreateMap<Passenger, PassengerResponse>();
 
+            CreateMap<Ticket, TicketDto>()
+                .ForMember(d => d.GoingFrom, opt => opt.MapFrom(src => src.GoingFrom.LocationName))
+                .ForMember(d => d.ArrivingAt, opt => opt.MapFrom(src => src.ArrivingAt.LocationName))
+                .ForMember(d => d.FlightModel, opt => opt.MapFrom(src => src.Flight.Airplane.Model))
+                .ForMember(d => d.PassengerFirstName, opt => opt.MapFrom(src => src.Passenger.FirstName))
+                .ForMember(d => d.PassengerLastName, opt => opt.MapFrom(src => src.Passenger.LastName));
             CreateMap<TicketCreationDto, Ticket>();
             CreateMap<TicketCreationDto, BoardingPass>();
             CreateMap<Flight, TicketCreationDto>().ReverseMap();

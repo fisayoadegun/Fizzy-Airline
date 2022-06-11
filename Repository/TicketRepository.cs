@@ -42,9 +42,11 @@ namespace Fizzy_Airline.Repository
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<TicketDto> GetAll()
+		public IEnumerable<Ticket> GetAll()
 		{
-			throw new NotImplementedException();
+			var tickets = _dbContext.Tickets;
+
+			return _mapper.Map<IList<Ticket>>(tickets);
 		}
 
 		public async Task<int> GetSequence()
@@ -67,10 +69,45 @@ namespace Fizzy_Airline.Repository
 			throw new NotImplementedException();
 		}
 
+		public async Task<Ticket> GetTicketUsingBookingSurname(string bookingref, string Surname)
+		{
+			var ticket = await _dbContext.Tickets.Where(x => x.BookingReference == bookingref && x.Passenger.LastName == Surname)
+				//.Include(x => x.Flight)
+				//.Include(x => x.GoingFrom)
+				//.Include(x => x.ArrivingAt)
+				//.Include(x => x.Passenger)
+				.FirstOrDefaultAsync();
+			if (ticket == null) throw new KeyNotFoundException("Ticket Does not exist");
+			return ticket;
+		}
+
+		public async Task<Ticket> GetTicketById(int id)
+		{
+			var ticket = await _dbContext.Tickets.Where(x => x.Ticket_id == id)
+				.FirstOrDefaultAsync();
+			if (ticket == null) throw new KeyNotFoundException("Ticket Does not exist");
+			return ticket;
+
+		}
+
+		public async Task<Ticket> GetTicketByBookingReference(string bookingReference)
+		{
+			var ticket = await _dbContext.Tickets.Where(x => x.BookingReference == bookingReference)
+				.FirstOrDefaultAsync();
+			if (ticket == null) throw new KeyNotFoundException("Ticket Does not exist");
+			return ticket;
+		}
 		public async Task UpdateAsync(Ticket ticket)
 		{
 			_dbContext.Entry(ticket).State = EntityState.Modified;
 			await _dbContext.SaveChangesAsync();
+		}
+
+		private Ticket get_ticket(string bookingref, string Surname)
+		{
+			var ticket = _dbContext.Tickets.Find(bookingref, Surname);
+			if (ticket == null) throw new KeyNotFoundException("Ticket Not Found");
+			return ticket;
 		}
 	}
 }
