@@ -18,6 +18,7 @@ namespace Fizzy_Airline.Repository
 		private readonly IMapper _mapper;
 		private readonly IAccountService _accountService;
 		private readonly IFlightRepository _flghtRepo;
+		
 
 		public TicketRepository(DataContext dbContext, IMapper mapper, IAccountService accountService, IFlightRepository flghtRepo)
 		{
@@ -25,40 +26,15 @@ namespace Fizzy_Airline.Repository
 			_mapper = mapper;
 			_accountService = accountService;
 			_flghtRepo = flghtRepo;
+			
 		}
-		public async void AddTicket(TicketCreationDto ticket)
+		public void AddTicket(TicketCreationDto ticket)
 		{
+						
+			
 			
 
 			
-			if (ticket.GoingFromId == ticket.ArrivingAtId)
-				throw new AppException("Take off Location and Destination cannot be the same");
-
-			var addTicket = _mapper.Map<Ticket>(ticket);
-			var boardingPass = _mapper.Map<BoardingPass>(ticket);
-
-			var sequence = await GetSequence();
-			addTicket.Sequence = sequence;
-
-			var length = sequence.ToString().Length;
-			var alias = "FIZZY";
-
-			while (length < 3)
-			{
-				alias += "0";
-				length++;
-			}
-
-			addTicket.BookingReference = $"{alias}{sequence}";
-
-			boardingPass.CreatedAt = DateTime.Now;
-			boardingPass.Ticket_id = addTicket.Ticket_id;
-			boardingPass.Flight_id = addTicket.Flight_id;
-			addTicket.CreatedAt = DateTime.Now;
-
-			_dbContext.Tickets.Add(addTicket);
-			_dbContext.BoardingPasses.Add(boardingPass);
-			_dbContext.SaveChanges();
 		}
 
 		public void Delete(int id)
@@ -89,6 +65,12 @@ namespace Fizzy_Airline.Repository
 		public Ticket GetTicketRef(string bookingref)
 		{
 			throw new NotImplementedException();
+		}
+
+		public async Task UpdateAsync(Ticket ticket)
+		{
+			_dbContext.Entry(ticket).State = EntityState.Modified;
+			await _dbContext.SaveChangesAsync();
 		}
 	}
 }

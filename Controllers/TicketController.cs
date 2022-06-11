@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Fizzy_Airline.Dtos;
+using Fizzy_Airline.Helpers;
 using Fizzy_Airline.Models;
 using Fizzy_Airline.Repository.Interface;
 using Fizzy_Airline.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,28 +15,71 @@ namespace Fizzy_Airline.Controllers
 {
 	public class TicketController : BaseController
 	{
+		private readonly DataContext _dbContext;
 		private readonly IMapper _mapper;
 		private readonly ITicketRepository _ticketRepository;
 		private readonly IAccountService _accountService;
 
-		public TicketController(IMapper mapper, ITicketRepository ticketRepository, IAccountService accountService)
+		public TicketController(DataContext dbContext, IMapper mapper, ITicketRepository ticketRepository, IAccountService accountService)
 		{
+			_dbContext = dbContext;
 			_mapper = mapper;
 			_ticketRepository = ticketRepository;
 			_accountService = accountService;
 		}
 
 		[HttpPost("add_new_ticket")]
-		public ActionResult<TicketCreationDto> AddNewTicket(TicketCreationDto ticketCreationDto)
-{
-			var addTicket = _mapper.Map<Ticket>(ticketCreationDto);
-			var boardingPass = _mapper.Map<BoardingPass>(ticketCreationDto);
+		public async Task<IActionResult> AddNewTicket(TicketCreationDto ticket)
+		{
+			//2022-06-08T20:42:11.0695408
+			//2022-06-09T20:42:11.0710093
 
+			var addTicket = _mapper.Map<Ticket>(ticket);
+			var boardingPass = _mapper.Map<BoardingPass>(ticket);
+			var checkflight = _dbContext.Flights.First(x => x.GoingFromId == ticket.GoingFromId
+			&& x.ArrivingAtId == ticket.ArrivingAtId && x.DepartureDate == ticket.DepartureDate
+			&& x.ArrivalDate == ticket.ArrivalDate);
+			if (checkflight == null)
+				throw new AppException("Flight does not exist");
+			//var flight = _dbContext.Flights.First(x => x.Id == ticket.Flight_id);
+						
+
+			if (ticket.GoingFromId == ticket.ArrivingAtId)
+				throw new AppException("Take off Location and Destination cannot be the same");
+
+			addTicket.Flight_id = checkflight.Id;
+			addTicket.Price = checkflight.Price;
+
+			boardingPass.CreatedAt = DateTime.Now;
+
+			boardingPass.Flight_id = addTicket.Flight_id;			
+			addTicket.CreatedAt = DateTime.Now;
+			var sequence = await _ticketRepository.GetSequence();
+			addTicket.Sequence = sequence;
+
+			var length = sequence.ToString().Length;
+			var alias = "FIZZY";
+
+			while (length < 3)
+			{
+				alias += "0";
+				length++;
+			}
+			addTicket.BookingReference = $"{alias}{sequence}";
+			
 			addTicket.CreatedBy = $" {Account.FirstName}.{Account.LastName}";
+			addTicket.Passenger_id = Account.Id;
+			boardingPass.Passenger_id = addTicket.Passenger_id;
 			boardingPass.CreatedBy = $" {Account.FirstName}.{Account.LastName}";
+			
+			_dbContext.Tickets.Add(addTicket);
+			_dbContext.SaveChanges();
+			boardingPass.Ticket_id = addTicket.Ticket_id;
+			_dbContext.BoardingPasses.Add(boardingPass);
+			_dbContext.SaveChanges();
 
-			_ticketRepository.AddTicket(ticketCreationDto);
-			return Ok(ticketCreationDto);
+			
+			return Ok(ticket);
 		}
 	}
 }

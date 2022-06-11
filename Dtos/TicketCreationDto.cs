@@ -9,11 +9,12 @@ namespace Fizzy_Airline.Dtos
 	public class TicketCreationDto
 	{
 		public string BookingReference { get; set; }
-		[Display(Name = "Passenger")]		
-		public int Passenger_id { get; set; }
 
 		[Display(Name = "Flight")]
 		public int Flight_id { get; set; }
+
+		[Display(Name = "Passenger")]
+		public int Passenger_id { get; set; }
 
 		public double price { get; set; }
 
@@ -23,10 +24,15 @@ namespace Fizzy_Airline.Dtos
 		[Display(Name = "Arrinving At")]
 		public int ArrivingAtId { get; set; }
 
+		public bool HasCheckedIn { get; set; }
+		public bool HasBoarded { get; set; }
+		public bool Luggage { get; set; }
+
 		public DateTime DepartureDate { get; set; }
 		public DateTime ArrivalDate { get; set; }
 
-		
-		
+		public int? Sequence { get; set; }		
+
+
 	}
 }

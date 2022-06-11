@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Fizzy_Airline.Repository
 {
-	public abstract class GenericRepository<T> : IGenericRepository<T> where T : class, new()
+	public class GenericRepository<T> : IGenericRepository<T> where T : class, new()
 	{
 		protected DataContext _dbContext { get; set; }
 

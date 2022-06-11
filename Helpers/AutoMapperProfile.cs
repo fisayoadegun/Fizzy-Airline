@@ -96,6 +96,10 @@ namespace WebApi.Helpers
             CreateMap<RegisterRequest, Passenger>();
             CreateMap<Passenger, PassengerResponse>();
 
+            CreateMap<TicketCreationDto, Ticket>();
+            CreateMap<TicketCreationDto, BoardingPass>();
+            CreateMap<Flight, TicketCreationDto>().ReverseMap();
+
             CreateMap<UpdateRequest, Account>()
                 .ForAllMembers(x => x.Condition(
                     (src, dest, prop) =>

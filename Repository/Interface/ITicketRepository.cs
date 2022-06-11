@@ -21,5 +21,7 @@ namespace Fizzy_Airline.Repository.Interface
 
 		Task<int> GetSequence();
 
+		Task UpdateAsync(Ticket ticket);
+
 	}
 }
