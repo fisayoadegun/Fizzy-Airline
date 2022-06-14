@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Fizzy_Airline.Controllers
 {
+	[Authorize]
 	public class TicketController : BaseController
 	{
 		private readonly DataContext _dbContext;
@@ -97,6 +98,7 @@ namespace Fizzy_Airline.Controllers
 			
 			addTicket.CreatedBy = $" {Account.FirstName}.{Account.LastName}";
 			addTicket.Passenger_id = Account.Id;
+			addTicket.IsPaid = true;
 			boardingPass.Passenger_id = addTicket.Passenger_id;
 			boardingPass.CreatedBy = $" {Account.FirstName}.{Account.LastName}";
 			
@@ -109,5 +111,48 @@ namespace Fizzy_Airline.Controllers
 			
 			return Ok(ticket);
 		}
+
+		[HttpPut("{bookingRef}/{Surname}")]
+		public async Task<IActionResult> UpdateTicket(TicketUpdateDto ticket, string Surname, string bookingRef, int id)
+		{
+			if (id != Account.Id && Account.Role != Role.Admin)
+				return Unauthorized(new { message = "Unauthorized" });
+
+			var tickets = await _dbContext.Tickets
+				.FirstOrDefaultAsync(x => x.Passenger.LastName == Surname && x.BookingReference == bookingRef);
+			if (tickets.Passenger_id != id && Account.Role != Role.Admin)
+				return Unauthorized(new { message = "Unauthorized" });
+			if (ticket == null) throw new KeyNotFoundException("Ticket Not Found");
+			var updateTicket = _mapper.Map<Ticket>(ticket);
+			var checkflight = _dbContext.Flights.FirstOrDefault(x => x.GoingFromId == ticket.GoingFromId
+		   && x.ArrivingAtId == ticket.ArrivingAtId && x.DepartureDate == ticket.DepartureDate
+		   && x.ArrivalDate == ticket.ArrivalDate);
+			
+			if (checkflight == null)
+				throw new AppException("Flight does not exist");
+			if (checkflight.Departed)
+			{
+				tickets.Price = checkflight.Price + 5000;
+			}
+			else
+			{
+				tickets.Price = checkflight.Price;
+			}
+			tickets.Flight_id = checkflight.Id;
+			tickets.UpdatedAt = DateTime.Now;
+			tickets.UpdatedBy = $" {Account.FirstName}.{Account.LastName}";
+			//if (updateTicket.Flight.Departed == true)
+			//{
+			//	updateTicket.Price = checkflight.Price + 5000;
+			//}
+
+			_mapper.Map(ticket, tickets);
+			_dbContext.Tickets.Update(tickets);
+			await _dbContext.SaveChangesAsync();
+
+			return Ok(tickets);
+		}
 	}
 }
+
+

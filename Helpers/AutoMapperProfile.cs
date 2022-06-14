@@ -91,7 +91,8 @@ namespace WebApi.Helpers
                     }
                 ));
 
-            CreateMap<RegisterRequest, Account>();                      
+            CreateMap<RegisterRequest, Account>();
+            CreateMap<VerificationMailDto, Account>();  
 
             CreateMap<RegisterRequest, Passenger>();
             CreateMap<Passenger, PassengerResponse>();
@@ -105,6 +106,17 @@ namespace WebApi.Helpers
             CreateMap<TicketCreationDto, Ticket>();
             CreateMap<TicketCreationDto, BoardingPass>();
             CreateMap<Flight, TicketCreationDto>().ReverseMap();
+            CreateMap<TicketUpdateDto, Ticket>()
+                .ForAllMembers(x => x.Condition(
+                   (src, dest, prop) =>
+                   {
+                        // ignore null & empty string properties
+                        if (prop == null) return false;
+                       if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
+
+                       return true;
+                   }
+               ));
 
             CreateMap<UpdateRequest, Account>()
                 .ForAllMembers(x => x.Condition(

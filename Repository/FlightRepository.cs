@@ -81,9 +81,9 @@ namespace Fizzy_Airline.Repository
 			return _mapper.Map<IList<FlightDto>>(flights);
 		}
 
-		public Flight GetFlight(int id)
+		public async Task<FlightDto> GetFlight(int id)
 		{
-			var flight = _dbContext.Flights
+			var flight = await _dbContext.Flights.Where(x => x.Id == id)
 				.Include(x => x.Airplane)
 				.Include(x => x.FirstPilot)
 				.Include(x => x.SecondPilot)
@@ -92,10 +92,11 @@ namespace Fizzy_Airline.Repository
 				.Include(x => x.ThirdFlightAttendant)
 				.Include(x => x.GoingFrom)
 				.Include(x => x.ArrivingAt)
-				.First(x => x.Id == id);
+				.FirstOrDefaultAsync();
 			//var fligh2 = _dbContext.Flights.Find(id);
+			var getflight = _mapper.Map<FlightDto>(flight);
 			if (flight == null) throw new KeyNotFoundException ("Flight Not Found");
-			return flight;
+			return getflight;
 		}
 
 		public FlightUpdateRequestDto Update(int id, FlightUpdateDto model)

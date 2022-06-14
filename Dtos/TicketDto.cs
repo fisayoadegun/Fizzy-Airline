@@ -9,7 +9,7 @@ namespace Fizzy_Airline.Dtos
 	public class TicketDto
 	{
 		public int Ticket_id { get; set; }
-		public string BookingRefernce { get; set; }		
+		public string BookingReference { get; set; }		
 		public string PassengerFirstName { get; set; }
 		public string PassengerLastName { get; set; }
 		public string FlightModel { get; set; }

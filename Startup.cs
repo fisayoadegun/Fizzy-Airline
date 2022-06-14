@@ -37,9 +37,9 @@ namespace Fizzy_Airline
 		{
 			services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			// configure strongly typed settings object
-			services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
-			//services.AddControllers().AddJsonOptions(x =>
-			//	x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+			//services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
+			services.AddControllers().AddJsonOptions(x =>
+				x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 			services.AddSwaggerGen();
 			services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));

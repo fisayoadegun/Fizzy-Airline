@@ -29,12 +29,7 @@ namespace Fizzy_Airline.Repository
 			
 		}
 		public void AddTicket(TicketCreationDto ticket)
-		{
-						
-			
-			
-
-			
+		{															
 		}
 
 		public void Delete(int id)
@@ -42,11 +37,16 @@ namespace Fizzy_Airline.Repository
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<Ticket> GetAll()
+		public IEnumerable<TicketDto> GetAll()
 		{
-			var tickets = _dbContext.Tickets;
+			var tickets = _dbContext.Tickets
+				.Include(x => x.Flight)
+				.Include(x => x.Flight.Airplane)
+				.Include(x => x.GoingFrom)
+				.Include(x => x.ArrivingAt)
+				.Include(x => x.Passenger);
 
-			return _mapper.Map<IList<Ticket>>(tickets);
+			return _mapper.Map<IList<TicketDto>>(tickets);
 		}
 
 		public async Task<int> GetSequence()
@@ -57,45 +57,49 @@ namespace Fizzy_Airline.Repository
 			var count = await _dbContext.Set<Ticket>().CountAsync();
 
 			return count >= maxSeq ? count : maxSeq;
-		}
+		}		
 
-		public Ticket GetTicket(int id)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Ticket GetTicketRef(string bookingref)
-		{
-			throw new NotImplementedException();
-		}
-
-		public async Task<Ticket> GetTicketUsingBookingSurname(string bookingref, string Surname)
+		public async Task<TicketDto> GetTicketUsingBookingSurname(string bookingref, string Surname)
 		{
 			var ticket = await _dbContext.Tickets.Where(x => x.BookingReference == bookingref && x.Passenger.LastName == Surname)
-				//.Include(x => x.Flight)
-				//.Include(x => x.GoingFrom)
-				//.Include(x => x.ArrivingAt)
-				//.Include(x => x.Passenger)
+				.Include(x => x.Flight)
+				.Include(x => x.Flight.Airplane)
+				.Include(x => x.GoingFrom)
+				.Include(x => x.ArrivingAt)
+				.Include(x => x.Passenger)
 				.FirstOrDefaultAsync();
+			var ticketget = _mapper.Map<TicketDto>(ticket);
 			if (ticket == null) throw new KeyNotFoundException("Ticket Does not exist");
-			return ticket;
+			return ticketget;
 		}
 
-		public async Task<Ticket> GetTicketById(int id)
+		public async Task<TicketDto> GetTicketById(int id)
 		{
 			var ticket = await _dbContext.Tickets.Where(x => x.Ticket_id == id)
+				.Include(x => x.Flight)
+				.Include(x => x.Flight.Airplane)
+				.Include(x => x.GoingFrom)
+				.Include(x => x.ArrivingAt)
+				.Include(x => x.Passenger)
 				.FirstOrDefaultAsync();
+			var ticketget = _mapper.Map<TicketDto>(ticket);
 			if (ticket == null) throw new KeyNotFoundException("Ticket Does not exist");
-			return ticket;
+			return ticketget;
 
 		}
 
-		public async Task<Ticket> GetTicketByBookingReference(string bookingReference)
+		public async Task<TicketDto> GetTicketByBookingReference(string bookingReference)
 		{
 			var ticket = await _dbContext.Tickets.Where(x => x.BookingReference == bookingReference)
+				.Include(x => x.Flight)
+				.Include(x => x.Flight.Airplane)
+				.Include(x => x.GoingFrom)
+				.Include(x => x.ArrivingAt)
+				.Include(x => x.Passenger)
 				.FirstOrDefaultAsync();
+			var ticketget = _mapper.Map<TicketDto>(ticket);
 			if (ticket == null) throw new KeyNotFoundException("Ticket Does not exist");
-			return ticket;
+			return ticketget;
 		}
 		public async Task UpdateAsync(Ticket ticket)
 		{

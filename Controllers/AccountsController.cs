@@ -66,6 +66,13 @@ namespace Fizzy_Airline.Controllers
 			return Ok(new { message = "Registration successful, please check your email for verification instructions" });
 		}
 
+		[HttpPost("resend_verification_email")]
+		public IActionResult ResendVerificationEmail(VerificationMailDto model)
+		{
+			_accountService.ResendVerificationEmail(model, Request.Headers["origin"]);
+			return Ok(new { message = "Verification Email Sent Successfully, please check your email for verification instructions" });
+		}
+
 		[HttpPost("verify-email")]
 		public IActionResult VerifyEmail(VerifyEmailRequest model)
 		{

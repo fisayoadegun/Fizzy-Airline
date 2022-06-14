@@ -43,9 +43,9 @@ namespace Fizzy_Airline.Controllers
 		}
 
 		[HttpGet("{id:int}")]
-		public ActionResult<FlightDto> GetById(int id)
+		public async Task<ActionResult<FlightDto>> GetById(int id)
 		{
-			var flight = _flightRepository.GetFlight(id);
+			var flight = await _flightRepository.GetFlight(id);
 			return Ok(flight);
 		}
 

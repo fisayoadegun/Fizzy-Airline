@@ -9,15 +9,13 @@ namespace Fizzy_Airline.Repository.Interface
 {
 	public interface ITicketRepository
 	{
-		IEnumerable<Ticket> GetAll();
+		IEnumerable<TicketDto> GetAll();
 
-		Task<Ticket> GetTicketById(int id);
+		Task<TicketDto> GetTicketById(int id);
 
-		Task<Ticket> GetTicketByBookingReference(string bookingReference);
+		Task<TicketDto> GetTicketByBookingReference(string bookingReference);
 
-		Task<Ticket> GetTicketUsingBookingSurname(string bookingref, string Surname);
-
-		Ticket GetTicketRef(string bookingref);
+		Task<TicketDto> GetTicketUsingBookingSurname(string bookingref, string Surname);		
 
 		void AddTicket(TicketCreationDto ticket);
 

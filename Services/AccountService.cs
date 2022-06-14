@@ -23,6 +23,7 @@ namespace Fizzy_Airline.Services
         AuthenticateResponse RefreshToken(string token, string ipAddress);
         void RevokeToken(string token, string ipAddress);
         void Register(RegisterRequest model, string origin);
+        void ResendVerificationEmail(VerificationMailDto model, string origin);
 
         void UpdatePassenger(int id, PassengerResponse model);
         void VerifyEmail(string token);
@@ -151,6 +152,17 @@ namespace Fizzy_Airline.Services
             // send email
             sendVerificationEmail(account, origin);
         }
+
+        public void ResendVerificationEmail(VerificationMailDto model, string origin)
+		{
+           
+            var account = _mapper.Map<Account>(model);
+            if (account.IsVerified)
+                throw new AppException("This account has been verified.");
+            account.VerificationToken = randomTokenString();
+
+            sendVerificationEmail(account, origin);
+		}
 
         public void VerifyEmail(string token)
         {

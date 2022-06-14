@@ -15,7 +15,7 @@ namespace Fizzy_Airline.Repository.Interface
 	{
 		IEnumerable<FlightDto> GetAll();
 
-		Flight GetFlight(int id);
+		Task<FlightDto> GetFlight(int id);
 
 		void AddFlight(FlightCreationDto flight);
 
